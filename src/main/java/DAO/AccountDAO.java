@@ -45,27 +45,4 @@ public class AccountDAO {
         }
         return null;
     }
-
-    // public boolean accountUsernameExist(String username){
-    //     Connection connection = ConnectionUtil.getConnection();
-    //     try {
-    //         String sql = "select count(*) as r from account where username = ?";
-    //         PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-    //         preparedStatement.setString(1, username);
-    //         ResultSet rs = preparedStatement.executeQuery();
-    //         while(rs.next()){
-    //             int value= rs.getInt("r");
-    //             boolean response = value > 0;
-    //             return response;
-    //         }
-    //     }catch(SQLException e){
-    //         System.out.println(e.getMessage());
-    //     }
-    //     return false;
-    // }
-
-
-
-
 }

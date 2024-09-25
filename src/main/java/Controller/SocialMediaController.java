@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -77,20 +79,47 @@ public class SocialMediaController {
             ctx.status(400);
         }
     }
-    private void getMessagesHandler(Context context) {
-        context.json("sample text");
+    private void getMessagesHandler(Context ctx) {
+        List<Message> messages = messageService.getAllMessages();
+        ctx.json(messages);
     }
    
-    private void getMessageByIdHandler(Context context) {
-        context.json("sample text");
+    private void getMessageByIdHandler(Context ctx) throws JsonProcessingException  {
+        ObjectMapper mapper = new ObjectMapper();
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message message = messageService.getMessageById(message_id);
+        if(message!=null){
+            ctx.json(message);
+        }else{
+            ctx.status(200);
+        }
     }
-    private void deleteMessageByIdHandler(Context context) {
-        context.json("sample text");
+
+    private void deleteMessageByIdHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message message = messageService.deleteMessageById(message_id);
+        if(message!=null){
+            ctx.json(mapper.writeValueAsString(message));
+        }else{
+            ctx.status(200);
+        }
     }
-    private void updateMessageByIdHandler(Context context) throws JsonProcessingException{
-        context.json("sample text");
+    private void updateMessageByIdHandler(Context ctx) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();        
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message messageUpdt = messageService.updateMessage(message_id,message.message_text);
+        if(messageUpdt!=null){
+            ctx.json(mapper.writeValueAsString(messageUpdt));
+        }else{
+            ctx.status(400);
+        }
     }
-    private void getMessagesByAccountIdHandler(Context context) {
-        context.json("sample text");
+    private void getMessagesByAccountIdHandler(Context ctx) {
+        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+        List<Message> messages = messageService.getMessagesByUser(account_id);
+        ctx.json(messages);
+       
     }
 }
